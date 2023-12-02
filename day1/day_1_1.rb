@@ -9,13 +9,10 @@ def get_line_digits(line)
     if char.to_i != 0
       if first_digit.empty?
         first_digit = char
-        next
       end
       second_digit = char
     end
   end
-
-  return first_digit << first_digit if second_digit.empty?
 
   first_digit << second_digit
 end
