@@ -14,7 +14,6 @@ end
 def get_numbers(matrix)
   sum = 0
   matrix.each_with_index do |line, i|
-    end_of_line = line.length - 1
     num = ''
     has_adjacent = false
 

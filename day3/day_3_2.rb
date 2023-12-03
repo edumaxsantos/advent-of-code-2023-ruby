@@ -7,8 +7,6 @@ def get_adjacent(matrix, positions, i, j)
   positions.select do |position|
     x = i + position[0]
     y = j + position[1]
-    #puts "x: #{x}, y: #{y}"
-    #puts matrix[x][y]
     matrix[x][y] =~ /\d/
   end
 end
@@ -17,46 +15,12 @@ def get_gear_ratios(matrix)
   gear_ratios = []
 
   matrix.each_with_index do |line, i|
-    end_of_line = line.length - 2
     line.each_with_index do |element, j|
       positions = []
 
-      is_first_line = i == 0
-      is_middle_col = j != 0 && j < end_of_line
-      is_first_col = j == 0
-      is_last_line = i == matrix.length - 1
-      is_middle_line = !is_first_line && !is_last_line
-
       next if element != "*"
 
-      if is_first_line
-        if is_middle_col
-          positions = [[0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
-        else
-          if is_first_col
-            positions = [[0, 1], [1, 0], [1, 1]]
-          else
-            positions = [[0, -1], [1, -1], [1, 0]]
-          end
-        end
-      end
-
-      if is_last_line
-        if is_middle_col
-          positions = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1]]
-        else
-          if is_first_col
-            positions = [[-1, 0], [-1, 1], [0, 1]]
-          else
-            positions = [[-1, -1], [-1, 0], [0, -1]]
-          end
-        end
-      end
-
-      # middle
-      if is_middle_line && is_middle_col
-        positions = [[-1 ,-1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
-      end
+      positions = [[-1 ,-1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
 
       adjacent_matrix = get_adjacent(matrix, positions, i, j)
 
@@ -101,7 +65,14 @@ def get_gear_ratios(matrix)
 end
 
 lines = File.readlines('input-3.txt')
+size = lines[0].size
 
-matrix = lines.map { |line| line.split('') }
+# add first empty row
+matrix = [Array.new(size + 2) { |i| '.' }]
+
+matrix += lines.map { |line| ['.'] + line.strip.split('') + ['.'] }
+
+# add last empty row
+matrix += [Array.new(size + 2) { |i| '.' }]
 
 puts get_gear_ratios(matrix).inject :+
